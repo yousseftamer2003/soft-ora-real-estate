@@ -1,0 +1,36 @@
+---
+description: Use Soft-Ora CRM Swagger/OpenAPI for every HTTP API; never invent endpoints; skip mobile-only home names.
+alwaysApply: true
+---
+
+# Soft-Ora CRM API (source of truth)
+
+Every network call in this app must come from the live CRM docs — not guessed paths or a parallel backend.
+
+- UI / Try it: [CRM API Swagger](https://crm.soft-ora.com/docs/api)
+- Spec: `https://crm.soft-ora.com/docs/openapi.yaml`
+- Base URL: `https://crm.soft-ora.com/api`
+
+Before adding or changing a fetch, **read the spec** (or Swagger) for that operation: method, path, auth, request body, query params, and response shape. Match field names and types exactly. Admin APIs are **not** in this doc — do not invent admin routes.
+
+## Auth (from the spec)
+
+- Public: `/register`, `/login`, OTP, Google — no bearer token.
+- Marketplace `/user/*`: Sanctum bearer **and** `role=user`.
+- CRM `/crm/*`: Sanctum bearer **plus** the documented permission.
+- Send `Authorization: Bearer {token}` as documented. Do not invent extra headers.
+
+## Forbidden: Home Names (mobile only)
+
+Do **not** call or wrap:
+
+- `GET /user/home-names` (`listHomeNames`, tag **Home Names**)
+
+That listing is for the mobile app only. For web home/listing UI, use other documented operations (e.g. Units, Developers, User Homepage) that match the Figma screen.
+
+```text
+❌ BAD: GET /api/listings or GET /user/home-names
+✅ GOOD: Open the spec, pick the documented Units / Developers / CRM operation, call https://crm.soft-ora.com/api{path}
+```
+
+If the spec has no operation for a feature, stop and say so — do not add a fake client or mock URL that pretends to be CRM.

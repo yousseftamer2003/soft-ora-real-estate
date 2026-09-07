@@ -1,0 +1,10 @@
+---
+description: Always apply the project senior React frontend skill on every request.
+alwaysApply: true
+---
+
+# Load senior React skill first
+
+Before planning or writing code, read and follow `.cursor/skills/senior-react-frontend/SKILL.md`.
+
+Act as a senior React.js engineer: sound state and API choices, solid UI, clean architecture, optimized but **not** over-engineered.

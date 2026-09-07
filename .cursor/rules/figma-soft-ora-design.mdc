@@ -1,0 +1,43 @@
+---
+description: Follow the Walied Homes Figma file via Figma MCP; implement pages/components exactly; brand as Soft-Ora.
+alwaysApply: true
+---
+
+# Soft-Ora real estate — Figma source of truth
+
+This site is a **live Soft-Ora** (software house) demo for real-estate agency owners. They buy the product; their name, logo, and data replace the demo content later. **Never ship “Walied Homes” copy, logos, or domain language.** Use **Soft-Ora** everywhere the Figma file says Walied Homes.
+
+## Official logo (replaces Walied Homes)
+
+Use **only** this file for header, footer, favicon/app icon, and any Figma logo slot:
+
+- Asset: `src/assets/softora-logo.png`
+- Wordmark: lowercase **softora** (blue parallelogram, white type, sparkle + swirl)
+- Tagline under the mark when the design has space for a tagline: **digital solutions, made simple**
+- Do not recreate the logo in CSS/SVG, crop off the tagline unless the Figma slot is icon-only, or use the Walied Homes / Vite / React marks.
+
+## Canonical design
+
+- File: [Walied Homes on Figma](https://www.figma.com/design/cM9khCJpA15oVwvLD8TZCc/Walied-Homes?node-id=0-1)
+- `fileKey`: `cM9khCJpA15oVwvLD8TZCc`
+- Default canvas: `node-id=0-1` → `0:1`
+
+Pixel-match layout, spacing, type, color, radius, shadows, and component structure from this file. Do not invent a parallel design system.
+
+## Required workflow (every UI / page / component)
+
+1. Use the **Figma MCP** (`plugin-figma-figma`). If tools are unauthenticated, authenticate, then continue.
+2. Load **figma-design-to-code** before `get_design_context`.
+3. Resolve the target frame (`get_metadata` / screenshot), then `get_design_context` with `fileKey` + `nodeId`.
+4. Adapt the reference to this repo (reuse existing components, tokens, routes). Do not paste generated code blindly.
+5. Replace Walied Homes branding with Soft-Ora: name, `src/assets/softora-logo.png` in every logo slot, favicon/title, footer, meta. Keep layout identical.
+6. Verify in the browser against the Figma frame (desktop and mobile if the file has both).
+
+```text
+❌ BAD: Build a listing card from memory / generic Tailwind.
+✅ GOOD: Same Figma hierarchy; swap “Walied Homes” → “Soft-Ora” and the Figma logo → `src/assets/softora-logo.png`.
+```
+
+## Out of scope for “creative” changes
+
+No new pages, sections, or visual language unless the user asks **and** you still start from the closest Figma frame.

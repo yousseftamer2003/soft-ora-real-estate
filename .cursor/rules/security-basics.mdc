@@ -1,0 +1,40 @@
+---
+description: Security basics for this Soft-Ora Vite + React app — prevent XSS, leaked secrets, unsafe APIs, and insecure data handling.
+alwaysApply: true
+---
+
+# Soft-Ora security basics
+
+Assume this demo will become a **live, multi-tenant** product (agency name/logo/data swapped in). Treat every change as production-facing. Prefer a **secure default** over a shortcut.
+
+## Secrets and config
+
+- Never commit `.env`, API keys, tokens, or service-role credentials. Only `VITE_*` values may ship to the browser — and those are **public**.
+- Put privileged keys (DB admin, email, payments, CMS) on a **server** only. The Vite client must not call privileged APIs directly.
+
+```text
+❌ BAD: const stripeSecret = import.meta.env.VITE_STRIPE_SECRET_KEY
+✅ GOOD: Browser calls our backend; the server holds STRIPE_SECRET_KEY
+```
+
+## XSS and unsafe HTML
+
+- Do not use `dangerouslySetInnerHTML` or `innerHTML` for listing copy, agent bios, or CMS/Figma text.
+- Render React text nodes. Sanitize only if HTML is an explicit product requirement (then use a maintained sanitizer + tight allowlist).
+- Escape values used in `href`, `src`, and iframe URLs. Allow `https:` (and in-app routes) only — block `javascript:` and open redirects.
+
+## Forms, auth, and data
+
+- Validate on the **server** (required). Client validation is UX only.
+- Parameterize all queries; never concatenate user input into SQL/filters.
+- Enforce authz on every write (who can edit which agency/listing). Do not trust hidden fields or client role flags.
+- Store sessions in **httpOnly, Secure, SameSite** cookies — not `localStorage` for tokens.
+- Rate-limit public forms (contact, login, search). Do not echo raw user input back as HTML.
+
+## Supply chain and headers
+
+- Do not add unused dependencies. Pin versions; avoid `eval`, unchecked `postMessage`, and random scripts.
+- When a host/backend exists, send security headers (CSP, `X-Content-Type-Options`, `Referrer-Policy`, `frame-ancestors`).
+- Log errors without PII or tokens. Do not disable TLS or `dangerouslyDisable*` flags to “make it work.”
+
+If a feature needs an insecure pattern, stop and use a safe alternative — do not leave TODOs that weaken security.
